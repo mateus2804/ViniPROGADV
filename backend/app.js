@@ -2,9 +2,20 @@ const express = require("express");
 const bodyParser = require("body-parser");
 var path = require('path');
 
+const mongoose = require('mongoose')
+
 var appRoutes = require('./routes/app');
+const messagesRoutes = require('./routes/messages');
 
 const app = express();
+
+mongoose.connect('mongodb://127.0.0.1:27017/node-angular')
+  .then(() => {
+    console.log('Conexão com o MongoDB estabelecida com sucesso.');
+  })
+  .catch(error => {
+    console.error('Erro na conexão com o MongoDB:', error);
+  });
 
 // view engine setup
 app.set('views', path.join(__dirname, 'views'));
@@ -23,6 +34,7 @@ app.use((req, res, next) => {
   next();
 });
 
+app.use('/message', messagesRoutes);
 app.use('/', appRoutes);
 
 // catch 404 and forward to error handler 

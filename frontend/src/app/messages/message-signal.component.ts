@@ -2,6 +2,7 @@ import { FormsModule } from '@angular/forms';
 import { CommonModule } from '@angular/common';
 import { Component, input, Input, Output, EventEmitter } from '@angular/core';
 import { Message } from './message.model';
+import { MessageService } from './message.services';
 
 @Component({
   selector: 'app-message-signal',
@@ -18,7 +19,13 @@ export class MessageComponentSignal {
 
     @Output() outputMessage = new EventEmitter<string>();
 
+    constructor(private messageServiceObj : MessageService) {}
+
     onEdit(){
         this.outputMessage.emit("Texto retornado componente com signal: venho de message(child) para o app(pai)");
+    }
+
+    onDelete(){
+      this.messageServiceObj.deleteMessage(this.messageVarClasse());
     }
 }
