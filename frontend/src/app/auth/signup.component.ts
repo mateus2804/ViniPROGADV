@@ -1,5 +1,7 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, inject, OnInit } from '@angular/core';
 import { FormControl, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
+import { User } from './user.model';
+import { UserService } from './signup.services';
 
 @Component({
   selector: 'app-signup',   
@@ -12,10 +14,32 @@ import { FormControl, FormGroup, ReactiveFormsModule, Validators } from '@angula
 export class SignupComponent implements OnInit {
   myForm!: FormGroup;
 
+  private userService = inject(UserService);
+
   onSubmit(){
-    console.log(this.myForm);
+    const userAux = new User(
+      this.myForm.value.firstNameTS, 
+      this.myForm.value.lastNameTS, 
+      this.myForm.value.emailTS, 
+      this.myForm.value.passwordTS
+    );
+    console.log(userAux);
+    this.userService.addUser(userAux).subscribe({
+                next: (dadosSucesso: any) => {
+                    console.log(dadosSucesso.myMsgSucesso);
+                    console.log({content: dadosSucesso.objUserSave.content});
+                    console.log({_id: dadosSucesso.objUserSave._id});
+                },
+                    error: (dadosErro) => {
+                    console.log(`$== !! Error (subscribe): $', dadosErro.info_extra ==`);
+                    console.log(dadosErro);
+                }
+      });
+
     this.myForm.reset();
   }
+
+  
 
   ngOnInit() {
     this.myForm = new FormGroup({
@@ -35,3 +59,25 @@ export class SignupComponent implements OnInit {
     });
   }
 }
+
+// export class MessageInputComponent {
+//   private messageService = inject(MessageService);
+
+//   onSubmit(form: NgForm)
+//   {
+//       // console.log("messageInputComponent: ");
+//       // console.log(form);
+//       const messageAux = new Message(form.value.myContentngForm, 'Vini');
+//       this.messageService.addMessage(messageAux).subscribe({
+//           next: (dadosSucesso: any) => {
+//               console.log(dadosSucesso.myMsgSucesso);
+//               console.log({content: dadosSucesso.objMessageSave.content});
+//               console.log({_id: dadosSucesso.objMessageSave._id});
+//           },
+//               error: (dadosErro) => {
+//               console.log(`$== !! Error (subscribe): $', dadosErro.info_extra ==`);
+//               console.log(dadosErro);
+//           }
+// });
+//       form.resetForm();
+//   }

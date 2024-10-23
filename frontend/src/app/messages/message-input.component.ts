@@ -17,8 +17,8 @@ export class MessageInputComponent {
 
     onSubmit(form: NgForm)
     {
-        console.log("messageInputComponent: ");
-        console.log(form);
+        // console.log("messageInputComponent: ");
+        // console.log(form);
         const messageAux = new Message(form.value.myContentngForm, 'Vini');
         this.messageService.addMessage(messageAux).subscribe({
             next: (dadosSucesso: any) => {

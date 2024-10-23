@@ -43,4 +43,22 @@ router.get('/', async function (req, res, next) {
         })
     }
 });
+
+router.delete('/message/:id', async (req, res, next) => {
+    try {
+        const messageId = req.params.id;
+
+        const message = await Message.findById(messageId);
+        if (!message) {
+            return res.status(404).json({ error: 'Mensagem não encontrada' });
+        }
+
+        await Message.findByIdAndDelete(messageId);
+
+        res.status(200).json({ message: 'Mensagem deletada com sucesso' });
+    } catch (error) {
+        res.status(500).json({ error: 'Erro ao deletar a mensagem' });
+    }
+});
+
 module.exports = router;

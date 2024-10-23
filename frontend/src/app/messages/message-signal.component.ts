@@ -15,7 +15,7 @@ export class MessageComponentSignal {
   
     color = 'yellow';
     // @Input() messageVarClasse : Message = new Message("", "");
-    messageVarClasse = input<Message>(new Message("", ""));
+    messageVarClasse = input<Message>(new Message("", "", "", ""));
 
     @Output() outputMessage = new EventEmitter<string>();
 
@@ -26,6 +26,14 @@ export class MessageComponentSignal {
     }
 
     onDelete(){
-      this.messageServiceObj.deleteMessage(this.messageVarClasse());
+      console.log(this.messageVarClasse().userId);
+      this.messageServiceObj.deleteMessage(this.messageVarClasse()).subscribe({
+        next: (dadosSucesso: any) => {
+        },
+            error: (dadosErro) => {
+            console.log(`$== !! Error (subscribe): $', dadosErro.info_extra ==`);
+            console.log(dadosErro);
+        }
+});;
     }
 }

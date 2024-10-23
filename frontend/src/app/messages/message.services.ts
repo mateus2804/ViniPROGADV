@@ -22,15 +22,25 @@ export class MessageService {
     private http = inject(HttpClient);
 
     addMessage(message: Message) : Observable<any> {
-        this.messageSService.push(message);
-        console.log(this.messageSService);
-
         return this.http.post<any>(`${this.baseUrl}/message`, message).pipe(
-            catchError((e) => this.errorHandler(e, 'addMessage()')))
+            map((response: any) => {
+                message.messageId = response.objMessageSave._id;
+                console.log("Mensagem salva com ID:", message.messageId);
+    
+                this.messageSService.push(message);
+                console.log(this.messageSService);
+    
+                return response;
+            }),
+            catchError((e) => this.errorHandler(e, 'addMessage()'))
+        );
     }
 
-    deleteMessage(message: Message) {
-    this.messageSService.splice(this.messageSService.indexOf(message), 1);
+    deleteMessage(message: Message) : Observable<any>{
+        this.messageSService.splice(this.messageSService.indexOf(message), 1);
+
+        return this.http.delete<any>(`${this.baseUrl}/message/${message.messageId}`).pipe(
+            catchError((e) => this.errorHandler(e, 'deleteMessage()')))
     }
 
     getMessages() : Observable<any>{
