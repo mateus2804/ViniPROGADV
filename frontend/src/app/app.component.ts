@@ -11,21 +11,6 @@ import { HeaderComponent } from './header.component';
   styleUrl: './app.component.css'
 })
 export class AppComponent {
-  
-  valorNgSwitch: number = 0;
 
-  mostrarElemento: boolean = true;
-  onMudaMostrarElemento(){
-    this.mostrarElemento = !this.mostrarElemento;
-  }
-
-  messageS: Message[] = [
-    new Message("Texto 01 da Mensagem", "ViniciusRosalen"),
-    new Message("Texto 02 da Mensagem", "RosalenSilva"),
-    new Message("Texto 03 da Mensagem", "SilvaVinicius")
-  ];
-
-  messageBinding: Message = new Message("Conteudo", "Mateus");
-  title = 'frontend';
 }
  

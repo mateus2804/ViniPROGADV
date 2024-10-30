@@ -24,16 +24,32 @@ export class UserService {
     addUser(user: User) : Observable<any> {
         return this.http.post<any>(`${this.baseUrl}/user`, user).pipe(
             map((response: any) => {
-                user.userId = response.objUserSave._id;
                 console.log("Mensagem salva com ID:", user.userId);
-    
-                this.userService.push(user);
-                console.log(this.userService);
     
                 return response;
             }),
             catchError((e) => this.errorHandler(e, 'addUser()'))
         );
     }
+
+    getUser(email: string): Observable<User> {
+        return this.http.get<User>(`${this.baseUrl}/user/${email}`);
+    }
+
+
+    // addMessage(message: Message) : Observable<any> {
+    //     return this.http.post<any>(`${this.baseUrl}/message`, message).pipe(
+    //         map((response: any) => {
+    //             message.messageId = response.objMessageSave._id;
+    //             console.log("Mensagem salva com ID:", message.messageId);
+    
+    //             // this.messageSService.push(message);
+    //             // console.log(this.messageSService);
+    
+    //             return response;
+    //         }),
+    //         catchError((e) => this.errorHandler(e, 'addMessage()'))
+    //     );
+    // }
 
 }

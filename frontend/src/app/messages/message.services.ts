@@ -27,8 +27,8 @@ export class MessageService {
                 message.messageId = response.objMessageSave._id;
                 console.log("Mensagem salva com ID:", message.messageId);
     
-                this.messageSService.push(message);
-                console.log(this.messageSService);
+                // this.messageSService.push(message);
+                // console.log(this.messageSService);
     
                 return response;
             }),

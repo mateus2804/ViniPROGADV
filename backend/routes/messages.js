@@ -44,7 +44,7 @@ router.get('/', async function (req, res, next) {
     }
 });
 
-router.delete('/message/:id', async (req, res, next) => {
+router.delete('/:id', async (req, res, next) => {
     try {
         const messageId = req.params.id;
 

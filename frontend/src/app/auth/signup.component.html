@@ -30,7 +30,7 @@
         <input type="password" id="pass" class="form-control" formControlName="passwordTS">
       </div>
       @if (myForm.get('passwordTS')?.errors?.['required'] && myForm.get('passwordTS')?.touched) {
-        <div><p style="color: red;">Sobrenome obrigatório.</p></div>
+        <div><p style="color: red;">Senha obrigatória.</p></div>
       }
       <button class="btn btn-primary"   
    type="submit" [disabled]="!myForm.valid">Cadastrar</button>

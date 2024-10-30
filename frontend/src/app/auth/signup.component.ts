@@ -17,29 +17,33 @@ export class SignupComponent implements OnInit {
   private userService = inject(UserService);
 
   onSubmit(){
-    const userAux = new User(
+      const userAux = new User(
+      this.myForm.value.emailTS,
+      this.myForm.value.passwordTS, 
       this.myForm.value.firstNameTS, 
       this.myForm.value.lastNameTS, 
-      this.myForm.value.emailTS, 
-      this.myForm.value.passwordTS
     );
-    console.log(userAux);
-    this.userService.addUser(userAux).subscribe({
-                next: (dadosSucesso: any) => {
-                    console.log(dadosSucesso.myMsgSucesso);
-                    console.log({content: dadosSucesso.objUserSave.content});
-                    console.log({_id: dadosSucesso.objUserSave._id});
-                },
-                    error: (dadosErro) => {
-                    console.log(`$== !! Error (subscribe): $', dadosErro.info_extra ==`);
-                    console.log(dadosErro);
-                }
+    const testUser = this.userService.getUser(userAux.email).subscribe({
+      next: (dadosSucesso: any) => {
+        alert("Esse email já está registrado");
+      },
+      error: (err) => {
+        this.userService.addUser(userAux).subscribe({
+          next: (dadosSucesso: any) => {
+              console.log(dadosSucesso.myMsgSucesso);
+              console.log({content: dadosSucesso.objUserSave.content});
+              console.log({_id: dadosSucesso.objUserSave._id});
+          },
+              error: (dadosErro) => {
+              console.log(`$== !! Error (subscribe): $', dadosErro.info_extra ==`);
+              console.log(dadosErro);
+          }
+        });
+        this.myForm.reset();
+      }
       });
-
-    this.myForm.reset();
   }
 
-  
 
   ngOnInit() {
     this.myForm = new FormGroup({

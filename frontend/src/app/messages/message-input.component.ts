@@ -8,7 +8,6 @@ import { Message } from "./message.model";
     standalone: true,
     imports: [FormsModule],
     templateUrl: './message-input.component.html',
-    // providers: [MessageService]
     styles: `input.ng-invalid.ng-touched {border: 1px solid red;}`
 })
 
@@ -32,12 +31,5 @@ export class MessageInputComponent {
             }
 });
         form.resetForm();
-    }
-
-    onSave(textoConsole: string)
-    {
-        const messageAux = new Message(textoConsole, 'Vini');
-        this.messageService.addMessage(messageAux)
-        console.log(textoConsole);
     }
 }

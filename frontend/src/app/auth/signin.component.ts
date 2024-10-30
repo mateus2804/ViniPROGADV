@@ -1,5 +1,6 @@
-import { Component, OnInit } from "@angular/core";
+import { Component, inject, OnInit } from "@angular/core";
 import { FormBuilder, FormGroup, ReactiveFormsModule, Validators, AbstractControl } from "@angular/forms";
+import { UserService } from "./signup.services";
 
 @Component({
     selector: 'app-signin',
@@ -16,6 +17,8 @@ export class SigninComponent implements OnInit {
         
     }
 
+    private userService = inject(UserService)
+
     minusculoFValidator(control: AbstractControl) {
         const pass = control.value as string;
       
@@ -26,9 +29,28 @@ export class SigninComponent implements OnInit {
         }
       }
 
-    
+      user: any;
+
+      logIn(email: string, password: string) {
+        this.userService.getUser(email).subscribe({
+            next: (dadosSucesso: any) => {
+                if (dadosSucesso?.objUser?.password === password) {
+                    alert("Login efetuado com sucesso!");
+                } else {
+                    alert("Senha errada!");
+                }
+            },
+            error: (err) => {
+                alert("Esse email não existe");
+                console.error("Erro ao fazer login:", err);
+            }
+        });
+    }
+
     onSubmit(){
-        console.log(this.myFormIn);
+        const email = this.myFormIn.value.emailTS;
+        const password = this.myFormIn.value.passwordTS;
+        this.logIn(email, password);
         this.myFormIn.reset();
     }
 
@@ -39,7 +61,7 @@ export class SigninComponent implements OnInit {
             null,
             Validators.compose([
             Validators.required,
-            Validators.pattern("[a-zA-Z0-9\-\\-]+@[a-zA-Z0-9\-\_\.]+")
+            Validators.pattern("^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\\.[a-zA-Z]{2,}$")
           ])
         ],
         passwordTS: [

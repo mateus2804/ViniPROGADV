@@ -9,6 +9,6 @@ export const appConfig: ApplicationConfig = {
   providers: [provideRouter(routes),
     provideHttpClient(), 
     { provide: MessageService },
-    { provide: UserService}]
+    { provide: UserService},]
 };
  
