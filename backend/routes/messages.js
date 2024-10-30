@@ -2,14 +2,26 @@ var express = require('express');
 var router = express.Router();
 
 const Message = require('../models/message');
+const User = require('../models/user')
 
 router.post('/', async function (req, res, next) {
-    const messageObject = new Message({
-        content: req.body.content
-    })
+    const { userId, content } = req.body;
+    
     try {
+        const user = await User.findById(userId);
+
+        const messageObject = new Message({
+            content: content,
+            user: user._id,
+            firtName: user.firstName
+        })
+
         const messageSave = await messageObject.save();
         console.log(messageSave)
+
+        user.messages.push(messageSave._id);
+        await user.save();
+        console.log(user)
 
         res.status(201).json({
             myMsgSucesso: "Messagem salva com sucesso",

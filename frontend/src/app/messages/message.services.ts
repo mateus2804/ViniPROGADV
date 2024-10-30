@@ -57,7 +57,7 @@ export class MessageService {
                 for (let msg of messageSResponseRecebida)
                 {
                     trasnformedCastMessagesModelFrontend.push(
-                        new Message(msg.content, 'Mateus', msg._id)
+                        new Message(msg.content, msg.firtName, msg.user, msg._id)
                     );
                 }
 

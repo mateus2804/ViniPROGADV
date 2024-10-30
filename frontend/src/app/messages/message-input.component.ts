@@ -18,18 +18,26 @@ export class MessageInputComponent {
     {
         // console.log("messageInputComponent: ");
         // console.log(form);
-        const messageAux = new Message(form.value.myContentngForm, 'Vini');
-        this.messageService.addMessage(messageAux).subscribe({
-            next: (dadosSucesso: any) => {
-                console.log(dadosSucesso.myMsgSucesso);
-                console.log({content: dadosSucesso.objMessageSave.content});
-                console.log({_id: dadosSucesso.objMessageSave._id});
-            },
-                error: (dadosErro) => {
-                console.log(`$== !! Error (subscribe): $', dadosErro.info_extra ==`);
-                console.log(dadosErro);
-            }
-});
-        form.resetForm();
+        if (localStorage.getItem('UserLogado'))
+        {
+            const user = JSON.parse(localStorage.getItem('UserLogado')!)
+            const messageAux = new Message(form.value.myContentngForm, user.firstName, user._id);
+            console.log(messageAux)
+            this.messageService.addMessage(messageAux).subscribe({
+                next: (dadosSucesso: any) => {
+                    console.log(dadosSucesso.myMsgSucesso);
+                    console.log({content: dadosSucesso.objMessageSave.content});
+                    console.log({_id: dadosSucesso.objMessageSave._id});
+                },
+                    error: (dadosErro) => {
+                    console.log(`$== !! Error (subscribe): $', dadosErro.info_extra ==`);
+                    console.log(dadosErro);
+                }
+                });
+            form.resetForm();
+        }
+        else {
+            alert("É necessário ter um usuário logado para criar mensagens!")
+        }
     }
 }
