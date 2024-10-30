@@ -2,6 +2,7 @@ import { Component, inject, OnInit } from '@angular/core';
 import { FormControl, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
 import { User } from './user.model';
 import { UserService } from './signup.services';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-signup',   
@@ -15,6 +16,7 @@ export class SignupComponent implements OnInit {
   myForm!: FormGroup;
 
   private userService = inject(UserService);
+  router = inject(Router);
 
   onSubmit(){
       const userAux = new User(
@@ -30,6 +32,7 @@ export class SignupComponent implements OnInit {
       error: (err) => {
         this.userService.addUser(userAux).subscribe({
           next: (dadosSucesso: any) => {
+              localStorage.setItem('UserLogado', JSON.stringify(dadosSucesso.objUserSave))
               console.log(dadosSucesso.myMsgSucesso);
               console.log({content: dadosSucesso.objUserSave.content});
               console.log({_id: dadosSucesso.objUserSave._id});
@@ -37,9 +40,11 @@ export class SignupComponent implements OnInit {
               error: (dadosErro) => {
               console.log(`$== !! Error (subscribe): $', dadosErro.info_extra ==`);
               console.log(dadosErro);
+
           }
         });
         this.myForm.reset();
+        this.router.navigate(['/mensagens'])
       }
       });
   }

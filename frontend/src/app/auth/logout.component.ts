@@ -1,15 +1,22 @@
 import { Component } from "@angular/core";
+import { Router } from "@angular/router";
 
 @Component({
     selector: 'app-logout',
     standalone: true,
-    template: `<div class="col-md-8 col-md-offset-2">
+    template: ` <br>
+                <br>
+                <div class="col-md-8 col-md-offset-2">
                     <button class="btn btn-danger" (click)="onLogout()">Log out</button>
-                  </div> `
+                </div> `
 })
 
 export class LogoutComponent {
-    onLogout(){
+    constructor(private router: Router) {}
 
+    onLogout(){
+        localStorage.clear()
+
+        this.router.navigate(['/mensagens'])
     }
 }

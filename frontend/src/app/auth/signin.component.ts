@@ -1,6 +1,7 @@
 import { Component, inject, OnInit } from "@angular/core";
 import { FormBuilder, FormGroup, ReactiveFormsModule, Validators, AbstractControl } from "@angular/forms";
 import { UserService } from "./signup.services";
+import { Router } from "@angular/router";
 
 @Component({
     selector: 'app-signin',
@@ -16,6 +17,8 @@ export class SigninComponent implements OnInit {
     {
         
     }
+
+    router = inject(Router);
 
     private userService = inject(UserService)
 
@@ -36,6 +39,7 @@ export class SigninComponent implements OnInit {
             next: (dadosSucesso: any) => {
                 if (dadosSucesso?.objUser?.password === password) {
                     alert("Login efetuado com sucesso!");
+                    localStorage.setItem('UserLogado', JSON.stringify(dadosSucesso.objUser))
                 } else {
                     alert("Senha errada!");
                 }
@@ -52,6 +56,7 @@ export class SigninComponent implements OnInit {
         const password = this.myFormIn.value.passwordTS;
         this.logIn(email, password);
         this.myFormIn.reset();
+        this.router.navigate(['/mensagens'])
     }
 
     ngOnInit() {
